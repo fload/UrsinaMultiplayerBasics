@@ -7,6 +7,7 @@ This is a starting point for people wanting to use ursina with ursinanetworking.
 - Handle player connections and disconnections
 - Handle player inputs
 - Get ping in console
+- Fix the timestep of game to 60hz
 
 ## TODO
 
