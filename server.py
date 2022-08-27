@@ -43,4 +43,3 @@ def Ping(Client, message):
 
 while True:
     Easy.process_net_events()
-    time.sleep(1 / 60)

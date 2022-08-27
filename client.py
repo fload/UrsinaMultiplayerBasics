@@ -5,7 +5,7 @@ from ursina import *
 from ursinanetworking import *
 
 window.borderless = False
-window.vsync = True
+window.vsync = False
 
 app = Ursina(
     title="Square Game",
@@ -17,6 +17,10 @@ SelfId = -1
 entity_map = {}
 actions_player = np.array([0, 0], dtype=float)
 current_time = 0
+
+global_time = 0
+last_update_time = 0
+seconds_between_updates = 1 / 60
 
 
 @Client.event
@@ -57,7 +61,14 @@ def Pong(message):
 def action_handle():
     global actions_player
     global Client
+
+    global global_time
+    global last_update_time
+    global seconds_between_updates
+
     actions_player = np.array([0, 0], dtype=float)
+    global_time += time.dt
+
     for key, value in held_keys.items():
         if value != 0:
             if key == Keys.right_arrow:
@@ -70,7 +81,11 @@ def action_handle():
                 actions_player[1] -= 1
 
     if actions_player[0] != 0 or actions_player[1] != 0:
-        Client.send_message("Move", {"id": SelfId, "direction": actions_player * 0.05})
+        if (global_time - last_update_time) >= seconds_between_updates:
+            Client.send_message(
+                "Move", {"id": SelfId, "direction": actions_player * 0.05}
+            )
+            last_update_time = global_time
 
 
 def input(key):
