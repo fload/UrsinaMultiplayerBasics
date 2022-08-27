@@ -69,16 +69,8 @@ def action_handle():
     actions_player = np.array([0, 0], dtype=float)
     global_time += time.dt
 
-    for key, value in held_keys.items():
-        if value != 0:
-            if key == Keys.right_arrow:
-                actions_player[0] += 1
-            if key == Keys.left_arrow:
-                actions_player[0] -= 1
-            if key == Keys.up_arrow:
-                actions_player[1] += 1
-            if key == Keys.down_arrow:
-                actions_player[1] -= 1
+    actions_player[0] = held_keys["right arrow"] - held_keys["left arrow"]
+    actions_player[1] = held_keys["up arrow"] - held_keys["down arrow"]
 
     if actions_player[0] != 0 or actions_player[1] != 0:
         if (global_time - last_update_time) >= seconds_between_updates:
